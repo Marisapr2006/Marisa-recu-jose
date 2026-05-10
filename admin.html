@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MShop - Panel de Administración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --white: #ffffff;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --border-color: #dcdde1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            height: 100%;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            padding: 15px 25px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu li a:hover, .sidebar-menu li a.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 250px;
+            flex-grow: 1;
+            padding: 30px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-add { background-color: var(--success); color: white; }
+        .btn-add:hover { background-color: #219150; }
+
+        .btn-edit { background-color: var(--accent-color); color: white; padding: 5px 10px; font-size: 0.8rem; }
+        .btn-delete { background-color: var(--danger); color: white; padding: 5px 10px; font-size: 0.8rem; }
+
+        /* TABLE STYLES */
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .prod-img {
+            width: 40px;
+            height: 40px;
+            background: #eee;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-stock { background-color: #e1f5fe; color: #039be5; }
+        .badge-low { background-color: #fff3e0; color: #ef6c00; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; }
+            .sidebar-header h2, .sidebar-menu li a span { display: none; }
+            .main-content { margin-left: 70px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>MShop</h2>
+            <small>Admin Panel</small>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="grafico.html"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a></li>
+            <li><a href="#" class="active"><i class="fas fa-box"></i> <span>Productos</span></a></li>
+            <li style="margin-top: 50px;"><a href="index.html"><i class="fas fa-arrow-left"></i> <span>Ver Tienda</span></a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="admin-header">
+            <h1>Gestión de Productos</h1>
+            <div class="user-info">
+                <span>Bienvenido, <strong>Admin</strong></span>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=3498db&color=fff" width="40" style="border-radius: 50%;">
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <button class="btn btn-add"><i class="fas fa-plus"></i> Añadir Nuevo Producto</button>
+        </div>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#001</td>
+                        <td><div class="prod-img"><i class="fas fa-laptop"></i></div></td>
+                        <td>Portátil Pro 15"</td>
+                        <td>Electrónica</td>
+                        <td>999,00 €</td>
+                        <td><span class="badge badge-stock">25 unidades</span></td>
+                        <td>
+                            <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#002</td>
+                        <td><div class="prod-img"><i class="fas fa-mobile-alt"></i></div></td>
+                        <td>Smartphone X10</td>
+                        <td>Telefonía</td>
+                        <td>599,00 €</td>
+                        <td><span class="badge badge-low">3 unidades</span></td>
+                        <td>
+                            <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#003</td>
+                        <td><div class="prod-img"><i class="fas fa-headphones"></i></div></td>
+                        <td>Auriculares Bluetooth</td>
+                        <td>Accesorios</td>
+                        <td>89,00 €</td>
+                        <td><span class="badge badge-stock">150 unidades</span></td>
+                        <td>
+                            <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-delete"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
