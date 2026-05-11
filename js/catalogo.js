@@ -6,72 +6,75 @@ const producto3 = new Producto(3, "Teclado Mecánico", 129.99, "https://ejemplo.
 
 const productos = [producto1, producto2, producto3];
 
-function cargarProductos(productos) {
+function simularPeticion(datos, delay = 400) {
+    return new Promise((resolve) => setTimeout(() => resolve(datos), delay));
+}
+
+async function cargarProductos(productos) {
     if (productos && productos.length > 0) {
         localStorage.setItem('productos', JSON.stringify(productos));
-        return true;
+        return await simularPeticion(true);
     }
-
-    return false;
+    return await simularPeticion(false);
 }
 
-function obtenerProductos() {
-    return JSON.parse(localStorage.getItem('productos'));
+async function obtenerProductos() {
+    const datos = JSON.parse(localStorage.getItem('productos'));
+    return await simularPeticion(datos);
 }
 
-function mostrarProductos(contenedor) {
-    const productos = obtenerProductos();
+async function mostrarProductos(contenedor) {
+    const productos = await obtenerProductos();
 
     contenedor.innerHTML = '';
 
     if (!productos) {
         return false;
-    } else {
-        let resultado = '';
-
-        productos.forEach(producto => {
-            let productoTarjeta = `
-                <div class="product-card">
-                    <div class="product-image"></div>
-                    <div class="product-info">
-                        <h3>${producto.nombre}</h3>
-                        <p class="product-price">${producto.precio} €</p>
-                        <button class="btn-add">Añadir al Carrito</ button>
-                    </div>
-                </div>
-            `;
-            resultado += productoTarjeta;
-        });
-
-        contenedor.innerHTML = resultado;
     }
+
+    let resultado = '';
+
+    productos.forEach(producto => {
+        let productoTarjeta = `
+            <div class="product-card">
+                <div class="product-image"></div>
+                <div class="product-info">
+                    <h3>${producto.nombre}</h3>
+                    <p class="product-price">${producto.precio} €</p>
+                    <button class="btn-add" id="${producto.id}">Añadir al Carrito</button>
+                </div>
+            </div>
+        `;
+        resultado += productoTarjeta;
+    });
+
+    contenedor.innerHTML = resultado;
 }
 
 function recargarProductos(productosBuscados, contenedor) {
-
     contenedor.innerHTML = '';
 
     if (!productosBuscados) {
         return false;
-    } else {
-        let resultado = '';
-
-        productosBuscados.forEach(producto => {
-            let productoTarjeta = `
-                <div class="product-card">
-                    <div class="product-image"></div>
-                    <div class="product-info">
-                        <h3>${producto.nombre}</h3>
-                        <p class="product-price">${producto.precio} €</p>
-                        <button class="btn-add">Añadir al Carrito</ button>
-                    </div>
-                </div>
-            `;
-            resultado += productoTarjeta;
-        });
-
-        contenedor.innerHTML = resultado;
     }
+
+    let resultado = '';
+
+    productosBuscados.forEach(producto => {
+        let productoTarjeta = `
+            <div class="product-card">
+                <div class="product-image"></div>
+                <div class="product-info">
+                    <h3>${producto.nombre}</h3>
+                    <p class="product-price">${producto.precio} €</p>
+                    <button type='submit' class="btn-add" id=${producto.id}>Añadir al Carrito</button>
+                </div>
+            </div>
+        `;
+        resultado += productoTarjeta;
+    });
+
+    contenedor.innerHTML = resultado;
 }
 
-export { productos, cargarProductos, mostrarProductos, recargarProductos }
+export { productos, cargarProductos, mostrarProductos, recargarProductos, obtenerProductos }

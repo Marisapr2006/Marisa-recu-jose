@@ -324,11 +324,11 @@
 
     <header>
         <div class="logo">
-            <a href="mshop_index.html"><h1>MShop</h1></a>
+            <a href="index.html"><h1>MShop</h1></a>
         </div>
 
         <nav class="nav-actions">
-            <a href="mshop_index.html" class="btn-nav"><i class="fas fa-store"></i> Volver a la Tienda</a>
+            <a href="index.html" class="btn-nav"><i class="fas fa-store"></i> Volver a la Tienda</a>
             <a href="#" class="btn-nav"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
         </nav>
     </header>
@@ -337,67 +337,29 @@
         <h2 class="page-title"><i class="fas fa-shopping-cart"></i> Tu Carrito de Compras</h2>
         
         <div class="cart-layout">
-            <div class="cart-items">
-                
-                <div class="cart-item">
-                    <div class="item-image"><i class="fas fa-laptop"></i></div>
-                    <div class="item-details">
-                        <h3 class="item-title">Portátil Pro</h3>
-                        <p class="item-price">Precio unitario: 999,00 €</p>
-                    </div>
-                    <div class="item-controls">
-                        <div class="quantity-control">
-                            <button class="quantity-btn">-</button>
-                            <input type="number" class="quantity-input" value="1" min="1">
-                            <button class="quantity-btn">+</button>
-                        </div>
-                        <div class="item-total">999,00 €</div>
-                        <button class="btn-remove" title="Eliminar producto"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
-
-                <div class="cart-item">
-                    <div class="item-image"><i class="fas fa-headphones"></i></div>
-                    <div class="item-details">
-                        <h3 class="item-title">Auriculares Inalámbricos</h3>
-                        <p class="item-price">Precio unitario: 89,00 €</p>
-                    </div>
-                    <div class="item-controls">
-                        <div class="quantity-control">
-                            <button class="quantity-btn">-</button>
-                            <input type="number" class="quantity-input" value="2" min="1">
-                            <button class="quantity-btn">+</button>
-                        </div>
-                        <div class="item-total">178,00 €</div>
-                        <button class="btn-remove" title="Eliminar producto"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
-
+            <div class="cart-items" id="contenedorCarrito">
+                Cargando carrito ...
             </div>
 
             <div class="cart-summary">
                 <h3 class="summary-title">Resumen del Pedido</h3>
                 
                 <div class="summary-row">
-                    <span>Subtotal (3 artículos):</span>
-                    <span>1.177,00 €</span>
+                    <span>Subtotal (<span id="resumen-cantidad">0</span> artículos):</span>
+                    <span id="resumen-subtotal">0.00 €</span>
                 </div>
                 <div class="summary-row">
                     <span>Gastos de envío:</span>
                     <span>Gratis</span>
                 </div>
-                <div class="summary-row">
-                    <span>Impuestos (IVA 21% inc.):</span>
-                    <span>204,27 €</span>
-                </div>
-                
+
                 <div class="summary-row total">
                     <span>Total:</span>
-                    <span>1.177,00 €</span>
+                    <span id="resumen-total">0.00 €</span>
                 </div>
 
                 <button class="btn-checkout"><i class="fas fa-credit-card"></i> Proceder al Pago</button>
-                <a href="mshop_index.html" class="btn-continue-shopping">Seguir comprando</a>
+                <a href="index.html" class="btn-continue-shopping">Seguir comprando</a>
             </div>
         </div>
     </main>
@@ -408,5 +370,48 @@
         </div>
     </footer>
 
+    <script type="module">
+        import { mostrarCarrito, eliminarProducto, actualizarResumen, vaciarCarrito, obtenerCarrito } from "./js/carrito.js";
+
+        const contenedorCarrito = document.getElementById('contenedorCarrito');
+
+        async function renderizar() {
+            await mostrarCarrito(contenedorCarrito);
+            await actualizarResumen();
+        }
+
+        await renderizar();
+
+        contenedorCarrito.addEventListener('click', async (e) => {
+            const boton = e.target.closest('.btn-remove');
+            if (!boton) return;
+
+            const index = Number(boton.dataset.index);
+            await eliminarProducto(index);
+            await renderizar();
+        });
+
+        document.querySelector('.btn-checkout').addEventListener('click', async () => {
+            const carrito = await obtenerCarrito();
+
+            if (carrito.length === 0) {
+                alert('Tu carrito está vacío. Añade productos antes de proceder al pago.');
+                return;
+            }
+
+            const total = carrito.reduce((acc, p) => acc + Number(p.precio), 0);
+            const lineas = carrito.map(p => `• ${p.nombre} — ${Number(p.precio).toFixed(2)} €`).join('\n');
+
+            alert(
+                '✅ ¡Pedido simulado realizado con éxito!\n\n' +
+                'Productos:\n' + lineas + '\n\n' +
+                `Total: ${total.toFixed(2)} €\n\n` +
+                'Gracias por tu compra en MShop.'
+            );
+
+            await vaciarCarrito();
+            await renderizar();
+        });
+    </script>
 </body>
 </html>

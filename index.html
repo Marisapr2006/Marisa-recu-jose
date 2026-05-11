@@ -27,6 +27,9 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
         /* HEADER */
@@ -122,6 +125,7 @@
         /* CATALOG */
         main {
             padding: 2rem 5%;
+            height: 100%;
         }
 
         .section-title {
@@ -275,41 +279,7 @@
         <h2 class="section-title">Nuestro Catálogo</h2>
 
         <div class="product-grid" id="contenedorProductos">
-            <div class="product-card">
-                <div class="product-image"><i class="fas fa-laptop fa-3x"></i></div>
-                <div class="product-info">
-                    <h3>Portátil Pro</h3>
-                    <p class="product-price">999,00 €</p>
-                    <button class="btn-add">Añadir al Carrito</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image"><i class="fas fa-mobile-alt fa-3x"></i></div>
-                <div class="product-info">
-                    <h3>Smartphone X</h3>
-                    <p class="product-price">599,00 €</p>
-                    <button class="btn-add">Añadir al Carrito</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image"><i class="fas fa-headphones fa-3x"></i></div>
-                <div class="product-info">
-                    <h3>Auriculares Inalámbricos</h3>
-                    <p class="product-price">89,00 €</p>
-                    <button class="btn-add">Añadir al Carrito</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image"><i class="fas fa-camera fa-3x"></i></div>
-                <div class="product-info">
-                    <h3>Cámara 4K</h3>
-                    <p class="product-price">450,00 €</p>
-                    <button class="btn-add">Añadir al Carrito</button>
-                </div>
-            </div>
+            <div class="load">Cargando productos ...</div>
         </div>
     </main>
 
@@ -342,30 +312,29 @@
 
     <script type="module">
         import { estaAutenticado, logout, obtenerUsuario } from "./js/autenticacion.js";
-        import { cargarProductos, productos, mostrarProductos, recargarProductos } from "./js/catalogo.js";
+        import { cargarProductos, productos, mostrarProductos, recargarProductos, obtenerProductos } from "./js/catalogo.js";
+        import { anadirAlCarrito, actualizarBadge } from "./js/carrito.js";
 
         const logoutBoton = document.getElementById('logoutBoton');
         const contenedorProductos = document.getElementById('contenedorProductos');
+        const buscadorInput = document.querySelector('.search-container input');
+        const buscadorBtn = document.querySelector('.search-container button');
 
         if (!estaAutenticado()) {
             window.location.href = 'login.html';
         } else {
-            cargarProductos(productos);
-            mostrarProductos(contenedorProductos);
+            await cargarProductos(productos);
+            await mostrarProductos(contenedorProductos);
+            await actualizarBadge();
         }
 
-        const productosParaBuscar = JSON.parse(localStorage.getItem('productos')) || [];
-
-        const buscadorInput = document.querySelector('.search-container input');
-        const buscadorBtn = document.querySelector('.search-container button');
+        const productosParaBuscar = await obtenerProductos() || [];
 
         function filtrarProductos() {
             const termino = buscadorInput.value.toLowerCase();
-
-            const productosFiltrados = productosParaBuscar.filter(producto => {
-                return producto.nombre.toLowerCase().includes(termino)
-            });
-
+            const productosFiltrados = productosParaBuscar.filter(p =>
+                p.nombre.toLowerCase().includes(termino)
+            );
             recargarProductos(productosFiltrados, contenedorProductos);
         }
 
@@ -374,6 +343,12 @@
         buscadorBtn.addEventListener('click', (e) => {
             e.preventDefault();
             filtrarProductos();
+        });
+
+        contenedorProductos.addEventListener('click', async (e) => {
+            if (e.target.closest('.btn-add')) {
+                await anadirAlCarrito(e);
+            }
         });
 
         logoutBoton.addEventListener("click", () => {
