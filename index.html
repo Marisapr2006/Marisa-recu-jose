@@ -323,7 +323,10 @@
         if (!estaAutenticado()) {
             window.location.href = 'login.html';
         } else {
-            await cargarProductos(productos);
+            const productosGuardados = await obtenerProductos();
+            if (!productosGuardados || productosGuardados.length === 0) {
+                await cargarProductos(productos);
+            }
             await mostrarProductos(contenedorProductos);
             await actualizarBadge();
         }

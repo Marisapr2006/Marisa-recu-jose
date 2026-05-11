@@ -329,7 +329,7 @@
 
         <nav class="nav-actions">
             <a href="index.html" class="btn-nav"><i class="fas fa-store"></i> Volver a la Tienda</a>
-            <a href="#" class="btn-nav"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            <button type="submit" class="btn-nav" id="logoutBoton"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
         </nav>
     </header>
 
@@ -372,6 +372,7 @@
 
     <script type="module">
         import { mostrarCarrito, eliminarProducto, actualizarResumen, vaciarCarrito, obtenerCarrito } from "./js/carrito.js";
+        import { logout } from "./js/autenticacion.js";
 
         const contenedorCarrito = document.getElementById('contenedorCarrito');
 
@@ -411,6 +412,13 @@
 
             await vaciarCarrito();
             await renderizar();
+        });
+
+        const logoutBoton = document.getElementById('logoutBoton');
+
+        logoutBoton.addEventListener("click", () => {
+            logout();
+            window.location.href = 'login.html';
         });
     </script>
 </body>

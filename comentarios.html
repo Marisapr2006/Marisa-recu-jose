@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MShop - Comentarios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --white: #ffffff;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --border-color: #dcdde1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            height: 100%;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            padding: 15px 25px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: 0.3s;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 250px;
+            flex-grow: 1;
+            padding: 30px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* TABLE STYLES */
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th,
+        table td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .comentario-texto {
+            max-width: 400px;
+            color: var(--text-color);
+        }
+
+        .usuario-nombre {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .usuario-username {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        .likes {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar-header h2,
+            .sidebar-menu li a span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>MShop</h2>
+            <small>Admin Panel</small>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="grafico.html"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a></li>
+            <li><a href="admin.html"><i class="fas fa-box"></i> <span>Productos</span></a></li>
+            <li><a href="comentarios.html" class="active"><i class="fas fa-comments"></i> <span>Comentarios</span></a></li>
+            <li style="margin-top: 50px;"><a href="index.html"><i class="fas fa-arrow-left"></i> <span>Ver Tienda</span></a></li>
+            <li><a href="#" id="logoutBoton"><i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span></a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="admin-header">
+            <h1>Comentarios</h1>
+            <div class="user-info">
+                <span>Bienvenido, <strong id="adminNombre">Admin</strong></span>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=3498db&color=fff" width="40"
+                    style="border-radius: 50%;">
+            </div>
+        </div>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Comentario</th>
+                        <th>Post</th>
+                        <th>Likes</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla">
+                    <tr>
+                        <td colspan="5" style="text-align:center;color:#7f8c8d;padding:20px;">Cargando comentarios...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { estaAutenticado, obtenerUsuario, logout } from "./js/autenticacion.js";
+
+        if (!estaAutenticado()) {
+            window.location.href = 'login.html';
+        }
+
+        const usuario = obtenerUsuario();
+        document.getElementById('adminNombre').textContent = usuario.nombre;
+
+        await pintarTabla();
+
+        async function obtenerComentarios() {
+            const respuesta = await fetch('https://dummyjson.com/comments');
+            const datos = await respuesta.json();
+            return datos.comments;
+        }
+
+        async function pintarTabla() {
+            const cuerpoTabla = document.getElementById('cuerpoTabla');
+            const comentarios = await obtenerComentarios();
+
+            cuerpoTabla.innerHTML = '';
+
+            if (!comentarios || comentarios.length === 0) {
+                cuerpoTabla.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#7f8c8d;padding:20px;">No hay comentarios.</td></tr>';
+                return false;
+            }
+
+            let resultado = '';
+            for (let i = 0; i < comentarios.length; i++) {
+                const comentario = comentarios[i];
+                resultado += `
+                    <tr>
+                        <td>#${comentario.id}</td>
+                        <td>
+                            <div class="usuario-nombre">${comentario.user.fullName}</div>
+                            <div class="usuario-username">@${comentario.user.username}</div>
+                        </td>
+                        <td class="comentario-texto">${comentario.body}</td>
+                        <td>#${comentario.postId}</td>
+                        <td>
+                            <div class="likes"><i class="fas fa-heart"></i> ${comentario.likes}</div>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            cuerpoTabla.innerHTML = resultado;
+            return true;
+        }
+
+        document.getElementById('logoutBoton').addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+
+</html>
