@@ -1,6 +1,6 @@
 import Usuario from "../modelos/Usuario.js";
 
-const admin = new Usuario(1, "Marisa", "marisa@email.com", "1234");
+const admin = new Usuario(1, "Admin", "admin@email.com", "1234");
 
 const CLAVE_USUARIO = "usuarioActual";
 

@@ -25,14 +25,12 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            /* Centrar el formulario en toda la pantalla */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-        /* Estilos para la tarjeta del formulario */
         .login-container {
             background-color: var(--white);
             padding: 2.5rem;
@@ -75,9 +73,8 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--accent-color);
-        }
+        }  
 
-        /* Estilos del botón */
         button[type="submit"] {
             width: 100%;
             padding: 12px;
@@ -109,6 +106,10 @@
             <div class="form-group">
                 <label for="contrasena">Contraseña</label>
                 <input type="password" id="contrasena" required>
+            </div>
+            <div>
+                <p>Usuario: <code>admin@email.com</code></p>
+                <p>Contraseña: <code>1234</code></p>
             </div>
 
             <button type="submit">Iniciar sesión</button>
